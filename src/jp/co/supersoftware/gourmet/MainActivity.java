@@ -2,6 +2,8 @@ package jp.co.supersoftware.gourmet;
 
 import java.util.Locale;
 
+import android.support.v7.app.ActionBar.Tab;
+import android.support.v7.app.ActionBar.TabListener;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -39,8 +41,12 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Set up the action bar.
+        
+        setupTabs();
+    }
+    
+    private void setupTabs() {
+    	 // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
@@ -71,10 +77,12 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             actionBar.addTab(
                     actionBar.newTab()
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
+                            .setIcon(mSectionsPagerAdapter.getPageIcon(i))
                             .setTabListener(this));
         }
     }
-
+    
+   
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -116,6 +124,12 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    	static final int FRAGMENT_CNT = 3;	// Show 3 total pages.
+    	final int[] ICON = new int[] {
+            R.drawable.ic_search,
+            R.drawable.ic_coopon,
+            R.drawable.ic_social,
+    	};
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -130,8 +144,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            return FRAGMENT_CNT;
         }
 
         @Override
@@ -146,6 +159,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     return getString(R.string.title_section3).toUpperCase(l);
             }
             return null;
+        }
+        
+        //set icon resource each tab
+        public int getPageIcon(int position){
+        	return ICON[position];
         }
     }
 
