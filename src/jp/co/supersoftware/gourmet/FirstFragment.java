@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+//import android.widget.TextView;
 
 public class FirstFragment extends Fragment {
 	/**
@@ -33,8 +33,8 @@ public class FirstFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_first, container, false);
-        TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-        textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
+        //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+        //textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
         return rootView;
     }
 }
