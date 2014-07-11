@@ -1,12 +1,13 @@
 package jp.co.supersoftware.gourmet;
 
-import java.util.ArrayList;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -37,8 +38,10 @@ public class FirstFragment extends Fragment {
     	 
     }
     
-    private static GoogleMap objMap;
-    private static Double dbLatitude, dbLongitude;
+    private GoogleMap Map;
+    private LocationManager locationManager;
+    private String provider;
+    private double lat, lng;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,91 +51,51 @@ public class FirstFragment extends Fragment {
     	}
     	
         View rootView = inflater.inflate(R.layout.fragment_first, container, false);
-        dbLatitude = 29.027167;
-        dbLongitude = 76.466904;
-        
+      
         setUpMapIfNeeded(); // For setting up the MapFragment
         
         return rootView;
     }
     
+    protected int getLayoutId() {
+        return R.layout.fragment_first;
+    }
     
-    /***** Sets up the map if it is possible to do so *****/
-    public static void setUpMapIfNeeded() {
-        // Do a null check to confirm that we have not already instantiated the map.
-        if (objMap == null) {
-            // Try to obtain the map from the SupportMapFragment.
-            objMap = ((SupportMapFragment) MainActivity.fragmentManager
-                    .findFragmentById(R.id.map)).getMap();
-            // Check if we were successful in obtaining the map.
-            if (objMap != null)
-                setUpMap();
+    private void setUpMapIfNeeded() {
+        if (Map != null) {
+            return;
+        }
+        Map = ((SupportMapFragment) MainActivity.fragmentManager.findFragmentById(R.id.map)).getMap();
+        if (Map != null) {
+            start();
         }
     }
-/*
-    @Override
-    public void setMenuVisibility(boolean menuVisible) {
-    		// TODO Auto-generated method stub
-    		super.setMenuVisibility(menuVisible);
-    		if(menuVisible)
-    		{
-    		//System.out.println("VISIBLE");
-    			/*
-    			 * for refeshing the markers on map based on zip list selction
-    			 */
-    /*
-    	      if (objMap != null)
-    	            setUpMap();
-    		}
-
-    	}
-*/
-    /**
-     * This is where we can add markers or lines, add listeners or move the
-     * camera.
-     * <p>
-     * This should only be called once and when we are sure that {@link #objMap}
-     * is not null.
-     */
-    private static void setUpMap() {
-        // For showing a move to my loction button
-        objMap.setMyLocationEnabled(true);
-        // For dropping a marker at a point on the Map
-        objMap.clear();
-        
-        // For zooming automatically to the Dropped PIN Location
-        objMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(dbLatitude,
-                dbLongitude), 5.0f));
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
-       // if (objMap != null)
-            //setUpMap();
-
-       // if (objMap == null) {
-            // Try to obtain the map from the SupportMapFragment.
-            objMap = ((SupportMapFragment) MainActivity.fragmentManager
-                    .findFragmentById(R.id.map)).getMap();
-            // Check if we were successful in obtaining the map.
-            if (objMap != null)
-                setUpMap();
-        //}
-    }
-
-    /**** The mapfragment's id must be removed from the FragmentManager
-     **** or else if the same it is passed on the next time then 
-     **** app will crash ****/
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (objMap != null) {
-            MainActivity.fragmentManager.beginTransaction()
-                .remove(MainActivity.fragmentManager.findFragmentById(R.id.map)).commit();
-            objMap = null;
+    
+    protected void start() {
+    	// zoom control button enable or disable.
+    	Map.getUiSettings().setZoomControlsEnabled(false);
+    	
+        locationManager = (LocationManager) getActivity().getSystemService(MainActivity.LOCATION_SERVICE);
+        // Define the criteria how to select the locatioin provider -> use
+        // default
+        Criteria criteria = new Criteria();
+        provider = locationManager.getBestProvider(criteria, false);
+        Location location = locationManager.getLastKnownLocation(provider);
+         
+        // Initialize the location fields
+        if (location != null) {
+        	lat =  location.getLatitude();
+            lng = location.getLongitude();
+        } else {
+        	lat =  51.503186;
+            lng = -0.126446;
         }
+         
+        getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));
     }
-
+    
+    protected GoogleMap getMap() {
+        setUpMapIfNeeded();
+        return Map;
+    }
 }
