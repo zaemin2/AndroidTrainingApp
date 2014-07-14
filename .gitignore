@@ -13,8 +13,6 @@ gen/
 .classpath
 .project
 .settings/
-gen/
-libs/
 
 # Gradle files
 .gradle/
