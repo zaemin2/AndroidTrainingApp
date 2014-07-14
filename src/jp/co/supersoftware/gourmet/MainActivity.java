@@ -13,6 +13,8 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+
+// ActionBarActivity is a child of "android.support.v4.app.FragmentActivity"
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
 
     /**
@@ -24,6 +26,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     SectionsPagerAdapter mSectionsPagerAdapter;
+    public static FragmentManager fragmentManager;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -45,7 +48,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        
+        fragmentManager = getSupportFragmentManager();
+        mSectionsPagerAdapter = new SectionsPagerAdapter(fragmentManager);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
