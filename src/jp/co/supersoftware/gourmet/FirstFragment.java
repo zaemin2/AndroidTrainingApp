@@ -1,5 +1,11 @@
 package jp.co.supersoftware.gourmet;
 
+import jp.co.supersoftware.clienthttp.HttpClient;
+import jp.co.supersoftware.clienthttp.HttpException;
+import jp.co.supersoftware.clienthttp.HttpParamsGet;
+import jp.co.supersoftware.clienthttp.HttpParamsMultiPart;
+import jp.co.supersoftware.clienthttp.HttpRequestGet;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -8,8 +14,11 @@ import com.google.android.gms.maps.model.LatLng;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,6 +99,9 @@ public class FirstFragment extends Fragment {
         	lat =  51.503186;
             lng = -0.126446;
         }
+        
+        MyTask task = new MyTask ();
+        task.execute();
          
         getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));
     }
@@ -98,4 +110,44 @@ public class FirstFragment extends Fragment {
         setUpMapIfNeeded();
         return Map;
     }
+    
+    
+    /**
+     * get gourmet data by HTTP client based on HOT PEPPER
+     * API KEY : 55da4e4fa8b53374
+     * @throws HttpException 
+     */
+    private class MyTask extends AsyncTask<Void , Void, Void > {
+
+    	private Exception exception;
+    	private String response;
+    	
+		@Override
+		protected Void doInBackground(Void... params) {
+			// TODO Auto-generated method stub
+			
+			try {
+				getGourmetData();
+			} catch (HttpException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+		
+		 private void getGourmetData() throws HttpException{
+		    	
+			HttpParamsGet getpart = new HttpParamsGet();
+			getpart.add("key", "55da4e4fa8b53374");
+		    getpart.add("Latitude", String.valueOf(lat));
+		    getpart.add("Longitude",String.valueOf(lng));
+		    getpart.add("Range", "3");
+
+		    HttpRequestGet get = new HttpRequestGet("http://api.hotpepper.jp/GourmetSearch/V110/", getpart);
+
+		    response = HttpClient.getStringResponse(get);
+		    Log.v("response", response);
+		 }
+    }
+
 }

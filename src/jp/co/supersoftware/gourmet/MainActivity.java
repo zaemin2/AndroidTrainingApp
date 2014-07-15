@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 
@@ -86,8 +87,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     public boolean onCreateOptionsMenu(Menu menu) {
         
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+    	MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_main_actions, menu);
+ 
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -122,11 +125,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
-    	final int FRAGMENT_CNT = 3;	// Show 3 total pages.
+    	final int FRAGMENT_CNT = 2;	// Show 3 total pages.
     	final int[] ICON = new int[] {		// ? is not available inner class ?
-            R.drawable.ic_search,
-            R.drawable.ic_coopon,
+            R.drawable.ic_map,
             R.drawable.ic_social,
+            R.drawable.ic_coopon,
     	};
 
         public SectionsPagerAdapter(FragmentManager fm) {
