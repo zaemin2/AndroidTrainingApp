@@ -1,5 +1,15 @@
 package jp.co.supersoftware.gourmet;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.xml.sax.InputSource;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+
 import jp.co.supersoftware.clienthttp.HttpClient;
 import jp.co.supersoftware.clienthttp.HttpException;
 import jp.co.supersoftware.clienthttp.HttpParamsGet;
