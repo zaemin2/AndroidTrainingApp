@@ -1,20 +1,14 @@
 package jp.co.supersoftware.gourmet;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.xml.sax.InputSource;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
+import org.json.JSONException;
 
 import jp.co.supersoftware.clienthttp.HttpClient;
 import jp.co.supersoftware.clienthttp.HttpException;
 import jp.co.supersoftware.clienthttp.HttpParamsGet;
-import jp.co.supersoftware.clienthttp.HttpParamsMultiPart;
 import jp.co.supersoftware.clienthttp.HttpRequestGet;
+import jp.co.supersoftware.map.ClusteringMarker;
+import jp.co.supersoftware.map.Map;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,11 +21,11 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 public class FirstFragment extends Fragment {
@@ -57,10 +51,10 @@ public class FirstFragment extends Fragment {
     	 
     }
     
-    private GoogleMap Map;
-    private LocationManager locationManager;
-    private String provider;
-    private double lat, lng;
+   // private GoogleMap Map;
+    //private LocationManager locationManager;
+    //private String provider;
+    //private double lat, lng;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,7 +65,8 @@ public class FirstFragment extends Fragment {
     	
         View rootView = inflater.inflate(R.layout.fragment_first, container, false);
       
-        setUpMapIfNeeded(); // For setting up the MapFragment
+        //setUpMapIfNeeded(); // For setting up the MapFragment
+        ClusteringMarker marker = new ClusteringMarker();
         
         return rootView;
     }
@@ -79,7 +74,13 @@ public class FirstFragment extends Fragment {
     protected int getLayoutId() {
         return R.layout.fragment_first;
     }
-    
+    /*
+    @Override
+    protected void start() {
+        getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.503186, -0.126446), 10));
+    }
+    */
+    /*
     private void setUpMapIfNeeded() {
         if (Map != null) {
             return;
@@ -89,7 +90,8 @@ public class FirstFragment extends Fragment {
             start();
         }
     }
-    
+    */
+    /*
     protected void start() {
     	// zoom control button enable or disable.
     	Map.getUiSettings().setZoomControlsEnabled(false);
@@ -115,18 +117,20 @@ public class FirstFragment extends Fragment {
          
         getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));
     }
-    
+    */
+    /*
     protected GoogleMap getMap() {
         setUpMapIfNeeded();
         return Map;
     }
-    
+    */
     
     /**
      * get gourmet data by HTTP client based on HOT PEPPER
      * API KEY : 55da4e4fa8b53374
      * @throws HttpException 
      */
+    /*
     private class MyTask extends AsyncTask<Void , Void, Void > {
 
     	private Exception exception;
@@ -149,15 +153,35 @@ public class FirstFragment extends Fragment {
 		    	
 			HttpParamsGet getpart = new HttpParamsGet();
 			getpart.add("key", "55da4e4fa8b53374");
-		    getpart.add("Latitude", String.valueOf(lat));
-		    getpart.add("Longitude",String.valueOf(lng));
+		    //getpart.add("Latitude", String.valueOf(lat));
+		    //getpart.add("Longitude",String.valueOf(lng));
 		    getpart.add("Range", "3");
 
 		    HttpRequestGet get = new HttpRequestGet("http://api.hotpepper.jp/GourmetSearch/V110/", getpart);
 
 		    response = HttpClient.getStringResponse(get);
 		    Log.v("response", response);
-		 }
+		    
+		    // refine XML data to ListView by XML parser
+		    
+		    /*
+		    ListView listView;
+		    
+		    listView = (ListView) findViewById(R.id.list);
+	        
+	        List<Shop> shops = null;
+	        try {
+	            XMLPullParserHandler parser = new XMLPullParserHandler();
+	            shops = parser.parse(getAssets().open("result.xml"));
+	            ArrayAdapter<Shop> adapter = 
+	                new ArrayAdapter<Shop>(this,R.layout.list_item, shops);
+	            listView.setAdapter(adapter);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	        */
+		 /*}
     }
+    */
 
 }
